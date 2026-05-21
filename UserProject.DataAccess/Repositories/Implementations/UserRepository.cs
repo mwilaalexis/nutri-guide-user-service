@@ -22,7 +22,7 @@ namespace UserProject.DataAccess.Repositories.Implementations
 
         public async Task<User> GetByIdAsync(Guid id)
         {
-            return await _context.Users.FindAsync(id);
+            return await _context.Users.Include(x=>x.Profile).FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task AddAsync(User user)
@@ -49,6 +49,7 @@ namespace UserProject.DataAccess.Repositories.Implementations
         public async Task<IEnumerable<User>> GetAllUsers(int page, int pageSize)
         {
             var users = await _context.Users
+                                 .Include(x=>x.Profile)
                                  .OrderBy(u => u.CreatedAt)
                                  .Skip((page - 1) * pageSize)
                                  .Take(pageSize)

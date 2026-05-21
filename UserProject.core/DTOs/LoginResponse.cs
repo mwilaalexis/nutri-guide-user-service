@@ -7,6 +7,7 @@ public class LoginResponse
     public DateTime RefreshTokenExpiresAt { get; set; }
 
     public string Role { get; set; } = string.Empty;
+    public string ProfileUrl { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string FullName { get; set; } = string.Empty;
     public Guid UserId { get; set; }

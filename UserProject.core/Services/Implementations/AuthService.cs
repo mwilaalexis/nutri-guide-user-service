@@ -4,6 +4,7 @@ using UserProject.DataAccess.Entities;
 using UserProject.DataAccess.Repositories.Interfaces;
 using UserProject.Core.Services.Interfaces;
 using UserProject.Core.Security;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace UserProject.Core.Services.Implementations
 {
@@ -105,7 +106,7 @@ namespace UserProject.Core.Services.Implementations
           
             var user = await _userRepository.GetByIdAsync(storedToken.UserId);
             if (user == null)
-                throw new UnauthorizedAccessException("User not found.");
+                throw new UnauthorizedAccessException();
 
             
             storedToken.IsRevoked = true;
@@ -133,7 +134,7 @@ namespace UserProject.Core.Services.Implementations
                 RefreshToken = storedToken.ReplacedByToken,
                 AccessTokenExpiresAt = DateTime.UtcNow.AddMinutes(15),
                 RefreshTokenExpiresAt = newRefreshTokenEntity.ExpiresAt,
-
+                ProfileUrl = user.Profile?.ProfileUrl,
                 Role = user.Role,
                 Email = user.Email,
                 FullName = user.Profile?.FullName ?? user.Email,

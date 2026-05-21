@@ -17,9 +17,9 @@ namespace UserProfileServiceProject.Mappings
                     opt => opt.MapFrom(src => string.IsNullOrWhiteSpace(src.Allergies)
                         ? new List<string>()
                         : src.Allergies.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList()));
-            // Add this to your MappingProfile constructor
+           
             CreateMap<ProfileDto, Profile>()
-                .ForMember(dest => dest.UserId, opt => opt.Ignore()) // Don't let the DTO overwrite the Owner ID
+                .ForMember(dest => dest.UserId, opt => opt.Ignore()) 
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
                 .ForMember(dest => dest.Allergies, opt => opt.MapFrom(src =>
@@ -58,13 +58,14 @@ namespace UserProfileServiceProject.Mappings
           .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))
           .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
           .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
-          .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role));
+          .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role))
+          .ForMember(dest => dest.ProfileImageUrl , opt => opt.MapFrom(src => src.Profile.ProfileUrl));
 
             CreateMap<UpdateProfileDto, Profile>()
             .ForMember(dest => dest.UserId, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
-            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore()) // handled in service
-            .ForMember(dest => dest.ProfileUrl, opt => opt.Ignore()) // handled in service when uploading file
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore()) 
+            .ForMember(dest => dest.ProfileUrl, opt => opt.Ignore()) 
             .ForMember(dest => dest.Allergies, opt => opt.MapFrom(src =>
                 !string.IsNullOrWhiteSpace(src.Allergies)
                     ? src.Allergies
