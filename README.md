@@ -1,188 +1,57 @@
-# 📌 Auth & User Profile Service
+# Auth and User Profile Service
 
-A **3-layer architecture authentication and user profile service** built with **.NET 8**, designed to manage user identity, authentication, and profile data in a clean and maintainable way.
+Authentication and user profile microservice for the [NutriGuide](https://github.com/mwilaalexis/NutriGuideUI) platform.
 
----
+## Responsibilities
 
-## 🚀 Overview
+- User registration and login
+- JWT access tokens and refresh tokens
+- User profile management
+- Weight tracking with historical entries for charting
 
-This service provides core features required in most applications:
+## Tech stack
 
-* 🔐 User authentication (Register / Login)
-* 👤 User profile management
-* 🔑 JWT-based authorization
-* 🧱 Structured 3-layer architecture
+- .NET 8
+- ASP.NET Core Web API
+- Entity Framework Core
+- SQL Server
+- AutoMapper
+- Docker (optional SQL Server via Docker Compose)
 
-It is ideal for integration into larger systems like web apps, mobile backends, or microservices ecosystems.
+## Architecture
 
----
-
-## 🏗️ Architecture (3-Layer)
-
-The project follows a **classic 3-layer architecture**:
-
-```text
-├── Presentation Layer   # API (Controllers, Endpoints)
-├── Business Layer       # Services, Logic, Interfaces
-├── Data Access Layer    # Database, EF Core, Repositories
+```
+Controllers  ->  Services  ->  Repositories  ->  EF Core / SQL Server
 ```
 
-### 🔹 Layer Responsibilities
+Dependency injection is centralized in extension methods under `Extensions/`.
 
-* **Presentation Layer**
+## Key endpoints
 
-  * Handles HTTP requests
-  * Exposes API endpoints
-  * Validates input & returns responses
+| Method | Route | Description |
+|--------|-------|-------------|
+| POST | `/api/auth/register` | Create account |
+| POST | `/api/auth/login` | Obtain JWT |
+| POST | `/api/auth/refresh` | Refresh token |
+| GET/PUT | `/api/profile` | Profile (authenticated) |
+| POST | `/api/profile/weight-entries` | Log weight entry |
+| GET | `/api/profile/weight-entries` | Weight history series |
 
-* **Business Layer**
-
-  * Contains application logic
-  * Defines interfaces and services
-  * Handles authentication & rules
-
-* **Data Access Layer**
-
-  * Manages database interactions
-  * Uses Entity Framework Core
-  * Implements repositories
-
----
-
-## ⚙️ Technologies
-
-* **.NET 8**
-* **ASP.NET Core Web API**
-* **Entity Framework Core**
-* **JWT Authentication**
-* **AutoMapper**
-* **SQL Server (configurable)**
-
----
-
-## 🔑 Features
-
-### Authentication
-
-* User registration
-* Secure login
-* JWT token generation
-
-### Authorization
-
-* Protected endpoints
-* Role-based access (if implemented)
-
-### User Profile
-
-* Retrieve user data
-* Update profile information
-
----
-
-## 📦 Installation
-
-### 1. Clone the repository
+## Run locally
 
 ```bash
-git clone https://github.com/mwilaalexis/AuthAndUserProfileService.git
-cd AuthAndUserProfileService
+cd UserProfileService
+docker compose -f Docker-compose.yml up -d   # optional SQL Server
+dotnet run --project UserProfileServiceProject
 ```
 
-### 2. Restore dependencies
+Default HTTP port: `5185` (see `launchSettings.json`).
 
-```bash
-dotnet restore
-```
+## Related repositories
 
-### 3. Configure app settings
-
-Update `appsettings.json`:
-
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "your_connection_string"
-  },
-  "Jwt": {
-    "Key": "your_secret_key",
-    "Issuer": "your_app",
-    "Audience": "your_users"
-  }
-}
-```
-
----
-
-## ▶️ Run the Project
-
-```bash
-dotnet run
-```
-
-Swagger will be available at:
-
-```
-https://localhost:{port}/swagger
-```
-
-
-## 📡 API Endpoints (Example)
-
-| Method | Endpoint           | Description    |
-| ------ | ------------------ | -------------- |
-| POST   | /api/auth/register | Register user  |
-| POST   | /api/auth/login    | Login user     |
-| GET    | /api/profile/id  | Get profile    |
-| PUT    | /api/profile/id  | Update profile |
-
----
-
-## 🔐 Security
-
-* JWT authentication
-* Password hashing
-* Input validation
-* Protected routes
-
----
-
-## 🧪 Testing
-
-You can test using:
-
-* Swagger UI
-* Postman
-* REST Client (VS Code)
-
----
-
-## 📈 Future Improvements
-
-* Refresh tokens
-* Email verification
-* OAuth integration (Google, GitHub)
-* Role & permission system
-* Logging & monitoring
-
----
-
-## 🤝 Contributing
-
-1. Fork the repo
-2. Create a branch
-3. Commit your changes
-4. Open a Pull Request
-
----
-
-##  License
-
-MIT License
-
----
-
-## 👤 Author
-
-Alexis Mwila
-[https://github.com/mwilaalexis](https://github.com/mwilaalexis)
+| Service | Repository |
+|---------|------------|
+| Gateway | [NutriGuidGateway](https://github.com/mwilaalexis/NutriGuidGateway) |
+| Food catalog | [Food-IngredientService](https://github.com/mwilaalexis/Food-IngredientService) |
+| Meal plans | [FoodPlanService](https://github.com/mwilaalexis/FoodPlanService) |
+| Frontend | [NutriGuideUI](https://github.com/mwilaalexis/NutriGuideUI) |
