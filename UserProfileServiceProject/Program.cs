@@ -38,7 +38,14 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseCors("AllowAll");
-SeedData.Initialize(app);
+try
+{
+    SeedData.Initialize(app);
+}
+catch (Exception ex)
+{
+    Console.WriteLine("Seed data skipped: " + ex.Message);
+}
 
 
 
